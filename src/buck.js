@@ -52,5 +52,13 @@ program
         
     })
 
+program
+    .command('')
+    .alias('')
+    .description(chalk.yellow('Run a bucket'))
+    .action(() => {
+        
+    })
+
 
 program.parse(process.argv);

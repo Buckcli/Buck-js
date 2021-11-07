@@ -1,0 +1,39 @@
+
+{
+  "name": "uyi",
+  "executor": "ssd",
+  "buck_list": [
+    "mkdir testicles",
+    "cd testicles",
+    "mkdir leaft",
+    "cd leaft",
+    "touch index.html"
+  ],
+  "description": "ds"
+},
+{
+  "name": "jos",
+  "executor": "sd",
+  "buck_list": [
+    "cd ../",
+    "git status",
+    "git log"
+  ],
+  "description": "ds"
+},
+{
+  "name": "abuja",
+  "executor": "asda",
+  "buck_list": [
+    "sa"
+  ],
+  "description": "dsad"
+},
+{
+  "name": "kebbi",
+  "executor": "sad",
+  "buck_list": [
+    "sad"
+  ],
+  "description": "sad"
+},
