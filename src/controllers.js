@@ -171,6 +171,7 @@ class Bucket {
    * runs commands in buck_list based on executor.
    *
    * @param {String} arg executor of bucket.
+   * @param {String} arg2 variable name to replace $.
    */
   async run(arg, arg2){
     try{
@@ -193,22 +194,35 @@ class Bucket {
           if(helper.iscd(cmdList[a])){
 
             let splitData = cmdList[a].split(" ");
-            splitData = splitData[1];
+            if(arg2){
+              splitData = arg2;
+            }else{
+              splitData = splitData[1];
+            }
+            
             
             //add timer(10ms) to complete a process before moving to the next
-            await new Promise(resolve => setTimeout(resolve, 10));
+            await new Promise(resolve => setTimeout(resolve, 100));
             process.chdir(`${splitData}`);
             
             exec(`${cmdList[a]}`); 
           }else if(cmdList[a].includes(" $")){
-            let replaceString = cmdList[a].replace(" $", ` ${arg2}`);
-            cmdList[a] = replaceString;
-            await new Promise(resolve => setTimeout(resolve, 10));
-            await exec(`${cmdList[a]}`, (error, stdout, stderr)=>{
-               console.log(stdout);
-            }); 
+
+            //handle if $ in bucklist commands
+            if(arg2){
+              let replaceString = cmdList[a].replace(" $", ` ${arg2}`);
+              cmdList[a] = replaceString;
+              await new Promise(resolve => setTimeout(resolve, 100));
+              await exec(`${cmdList[a]}`, (error, stdout, stderr)=>{
+                 console.log(stdout);
+              }); 
+            }else{
+              console.log("\n >> This command should take in an extra argument");
+              process.exit(1);
+            }
+            
           }else{
-            await new Promise(resolve => setTimeout(resolve, 10));
+            await new Promise(resolve => setTimeout(resolve, 100));
             await exec(`${cmdList[a]}`, (error, stdout, stderr)=>{
                console.log(stdout);
             }); 
@@ -340,13 +354,6 @@ class Bucket {
 
 
 
-let a = new Bucket()
-//a.listBucket();
-a.run("sd", "ds")
-//a.deleteBucket("akure");
-//a.addBucket();
-//a.createBucket()
-//a.eraseBucket();
 module.exports = {
     Bucket
 };
