@@ -1,19 +1,15 @@
 
 {
   "name": "uyi",
-  "executor": "ssd",
+  "executor": "sd",
   "buck_list": [
-    "mkdir testicles",
-    "cd testicles",
-    "mkdir leaft",
-    "cd leaft",
-    "touch index.html"
+    "mkdir $"
   ],
   "description": "ds"
 },
 {
   "name": "jos",
-  "executor": "sd",
+  "executor": "ssd",
   "buck_list": [
     "cd ../",
     "git status",
@@ -34,6 +30,15 @@
   "executor": "sad",
   "buck_list": [
     "sad"
+  ],
+  "description": "sad"
+},
+{
+  "name": "fsj",
+  "executor": "changdir",
+  "buck_list": [
+    "mkdir $",
+    " cd $"
   ],
   "description": "sad"
 },

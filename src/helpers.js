@@ -45,6 +45,25 @@ class Helpers{
       return wordsArr;
 	}
 
+
+  /**
+   * Returns true or false if cd is present in argument.
+   *
+   * @param {String} arg an element in buck_list.
+   * @return {bool} true/false.
+   */
+  iscd(arg){
+    if(arg){
+      if(arg.includes("cd") == true){
+        return true;
+      }else{
+        return false;
+      }
+    }else{
+      process.exit(1)
+    }
+  }
+
 }
 
 

@@ -22,8 +22,8 @@ describe("BUCK", () => {
 	it("Should return read file and return data as string", async () => {
 
 		let newBucket = new Bucket(); 
-    	let data = newBucket.middleMan("r");
-        data.should.be.a('string');
+		let data = newBucket.middleMan("r");
+		data.should.be.a('string');
         
     });
 

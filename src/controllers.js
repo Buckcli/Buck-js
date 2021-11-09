@@ -110,8 +110,6 @@ class Bucket {
                     
                   console.log('\n >> yay! it is done ');
 
-                  //fix the ($) argument for variable name
-
                   rl.close();
               });
             });
@@ -134,6 +132,7 @@ class Bucket {
     let data = this.middleMan("r");
     let wordsArr = new Helpers();
     wordsArr = wordsArr.buckToArray(data);
+    //listing a specific bucket
     if(arg){
       for(var obj = 0; obj < wordsArr.length; obj++){
 
@@ -152,6 +151,7 @@ class Bucket {
       
 
     }else{
+      //listing all buckets
       if (data){
         console.log('{ "bucket" : ')
         console.log(`  ${JSON.stringify(wordsArr, null, 2)}`);
@@ -167,61 +167,66 @@ class Bucket {
   
 
 
-  iscd(arg){
-    if(arg){
-      if(arg.includes("cd") == true){
-        return true;
-      }else{
-        return false;
-      }
-    }else{
-      process.exit(1)
-    }
-  }
-
-
   /**
    * runs commands in buck_list based on executor.
    *
    * @param {String} arg executor of bucket.
    */
-  async run(arg){
+  async run(arg, arg2){
     try{
 
       let data = this.middleMan("r");
-      let wordsArr = new Helpers();
+      let helper = new Helpers();
       let foundBucket;
 
-      wordsArr = wordsArr.buckToArray(data);
+      let wordsArr = helper.buckToArray(data);
       for(var obj = 0; obj < wordsArr.length; obj++){
 
         if(arg == wordsArr[obj].executor){
           foundBucket = wordsArr[obj]
         } 
       }
-      let cmdList = foundBucket.buck_list;
-      for(var a = 0; a < cmdList.length; a++){
+      if(foundBucket != undefined){
+        let cmdList = foundBucket.buck_list;
+        for(var a = 0; a < cmdList.length; a++){
 
-        if(this.iscd(cmdList[a])){
+          if(helper.iscd(cmdList[a])){
 
-          let splitData = cmdList[a].split(" ");
-          splitData = splitData[1];
-          
-          //add timer to complete a process before moving to the next
-          await new Promise(resolve => setTimeout(resolve, 10));
-          process.chdir(`${splitData}`);
-          
-          exec(`${cmdList[a]}`); 
-        }else{
-          await new Promise(resolve => setTimeout(resolve, 10));
-          await exec(`${cmdList[a]}`, (error, stdout, stderr)=>{
-             console.log(stdout);
+            let splitData = cmdList[a].split(" ");
+            splitData = splitData[1];
+            
+            //add timer(10ms) to complete a process before moving to the next
+            await new Promise(resolve => setTimeout(resolve, 10));
+            process.chdir(`${splitData}`);
+            
+            exec(`${cmdList[a]}`); 
+          }else if(cmdList[a].includes(" $")){
+            let replaceString = cmdList[a].replace(" $", ` ${arg2}`);
+            cmdList[a] = replaceString;
+            await new Promise(resolve => setTimeout(resolve, 10));
+            await exec(`${cmdList[a]}`, (error, stdout, stderr)=>{
+               console.log(stdout);
+            }); 
+          }else{
+            await new Promise(resolve => setTimeout(resolve, 10));
+            await exec(`${cmdList[a]}`, (error, stdout, stderr)=>{
+               console.log(stdout);
+            }); 
+          }
 
-          }); 
         }
-
+        if(cmdList.length < 2){
+          console.log('>> Done! executed 1 command.');
+        }else{
+          console.log('>> Done! executed '+ cmdList.length + ' commands.');
+        }
+        
+        //process.exit(1);
+      }else{
+        console.log('>> Cannot run command for unknown bucket');
+        //process.exit(1);
       }
-      //process.exit(1);
+      
     }catch(err){
       console.log(err)
       console.log(">> Error");
@@ -337,7 +342,7 @@ class Bucket {
 
 let a = new Bucket()
 //a.listBucket();
-a.run("sd")
+a.run("sd", "ds")
 //a.deleteBucket("akure");
 //a.addBucket();
 //a.createBucket()
