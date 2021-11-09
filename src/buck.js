@@ -16,8 +16,8 @@ program
 
 
 program
-    .command('--list')
-    .alias('-l')
+    .command('--list <bucketName>')
+    .alias('-l <bucketName>')
     .description(chalk.yellow('List all your buckets'))
     .action((bucketName) => {
         bucket.listBucket(bucketName);
@@ -32,16 +32,16 @@ program
     })
 
 program
-    .command('--add <name>')
-    .alias('-a <name>')
+    .command('--add <bucketName>')
+    .alias('-a <bucketName>')
     .description(chalk.yellow('add a new bucket from the cloud'))
     .action((bucketName) => {
         bucket.addBucket(bucketName);
     })
 
 program
-    .command('--delete <name>')
-    .alias('-d <name>')
+    .command('--delete <bucketName>')
+    .alias('-d <bucketName>')
     .description(chalk.yellow('delete a bucket'))
     .action((bucketName) => {
        bucket.deleteBucket(bucketName); 
